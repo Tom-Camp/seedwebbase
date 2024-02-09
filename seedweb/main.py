@@ -37,13 +37,13 @@ def create_profile(profile: schemas.ProfileCreate, db: Session = Depends(get_db)
 
 
 @app.get("/profiles/", response_model=list[schemas.Profile])
-def read_profiles(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def get_profiles(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     profiles = crud.get_profiles(db, skip=skip, limit=limit)
     return profiles
 
 
 @app.get("/profiles/{profile_id}", response_model=schemas.Profile)
-def read_profile(profile_id: int, db: Session = Depends(get_db)):
+def get_profile(profile_id: int, db: Session = Depends(get_db)):
     db_profile = crud.get_profile(db, profile_id=profile_id)
     if db_profile is None:
         raise HTTPException(status_code=404, detail="Profile not found")
@@ -74,14 +74,22 @@ def create_project(project: schemas.ProjectCreate, db: Session = Depends(get_db)
 
 
 @app.get("/projects/", response_model=list[schemas.Project])
-def read_projects(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def get_projects(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     projects = crud.get_projects(db, skip=skip, limit=limit)
     return projects
 
 
 @app.get("/projects/{project_id}", response_model=schemas.Project)
-def read_project(project_id: int, db: Session = Depends(get_db)):
+def get_project(project_id: int, db: Session = Depends(get_db)):
     db_project = crud.get_project(db, project_id=project_id)
+    if db_project is None:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return db_project
+
+
+@app.get("/projects/{project_id}/status")
+def get_project_status(project_id: int, db: Session = Depends(get_db)):
+    db_project = crud.get_project_status(db, project_id=project_id)
     if db_project is None:
         raise HTTPException(status_code=404, detail="Project not found")
     return db_project
@@ -117,7 +125,7 @@ def create_project_data(
 
 
 @app.get("/projects/{project_id}/data/", response_model=list[schemas.ProjectData])
-def read_projects_data(
+def get_projects_data(
     project_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
     db_data = crud.get_projects_data(db, project_id=project_id, skip=skip, limit=limit)
@@ -127,7 +135,7 @@ def read_projects_data(
 @app.get(
     "/projects/{project_id}/data/{project_data_id}", response_model=schemas.ProjectData
 )
-def read_project_data(project_data_id: int, db: Session = Depends(get_db)):
+def get_project_data(project_data_id: int, db: Session = Depends(get_db)):
     db_data = crud.get_project_data(db, project_data_id=project_data_id)
     if db_data is None:
         raise HTTPException(status_code=404, detail="Project Data not found")
@@ -166,7 +174,7 @@ def create_project_note(
 
 
 @app.get("/projects/{project_id}/notes/", response_model=list[schemas.ProjectNotes])
-def read_projects_notes(
+def get_projects_notes(
     project_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
     db_project_note = crud.get_projects_notes(
@@ -179,7 +187,7 @@ def read_projects_notes(
     "/projects/{project_id}/notes/{project_note_id}",
     response_model=schemas.ProjectNotes,
 )
-def read_project_note(project_note_id: int, db: Session = Depends(get_db)):
+def get_project_note(project_note_id: int, db: Session = Depends(get_db)):
     db_project_note = crud.get_project_note(db, project_note_id=project_note_id)
     if db_project_note is None:
         raise HTTPException(status_code=404, detail="Project Note not found")
