@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
@@ -46,11 +48,22 @@ def get_projects(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_project(db: Session, project: schemas.ProjectCreate):
-    db_project = Profile(**project.dict())
+    db_project = Project(**project.dict())
     db.add(db_project)
     db.commit()
     db.refresh(db_project)
     return db_project
+
+
+def get_project_status(db: Session, project_id: int):
+    project = db.query(Project).filter(Project.id == project_id).first()
+    current_time = datetime.now().time()
+    if project.profile_id:
+        profile = db.query(Profile).filter(Profile.id == project.profile_id).first()
+        colors = profile.colors
+    status = True if current_time >= project.start <= project.end else False
+    content = {"status": status, "profile": colors}
+    return content
 
 
 def update_project(db: Session, project_id: int, project: schemas.ProjectCreate):
