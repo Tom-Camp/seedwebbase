@@ -31,6 +31,11 @@ def get_db():
         db.close()
 
 
+@app.get("/healthcheck")
+def healthcheck():
+    return {"ping": "pong!"}
+
+
 @app.post("/profiles/", response_model=schemas.Profile)
 def create_profile(profile: schemas.ProfileCreate, db: Session = Depends(get_db)):
     return crud.create_profile(db=db, profile=profile)
