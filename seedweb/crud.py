@@ -36,7 +36,7 @@ def delete_profile(db: Session, profile_id: int):
     db_profile = db.query(Profile).filter(Profile.id == profile_id).first()
     db.delete(db_profile)
     db.commit()
-    return JSONResponse(content={"profile": [f"Profile: {db_profile.name} deleted"]})
+    return JSONResponse(content={"profile": f"Profile: {db_profile.name} deleted"})
 
 
 def get_project(db: Session, project_id: int):
@@ -83,7 +83,7 @@ def delete_project(db: Session, project_id: int):
     db_project = db.query(Project).filter(Project.id == project_id).first()
     db.delete(db_project)
     db.commit()
-    return JSONResponse(content={"project": [f"Project: {db_project.name} deleted"]})
+    return JSONResponse(content={"project": f"Project: {db_project.name} deleted"})
 
 
 def get_project_data(db: Session, project_data_id: int):
@@ -126,7 +126,7 @@ def delete_project_data(db: Session, project_data_id: int):
     )
     db.delete(db_project_data)
     db.commit()
-    return JSONResponse(content={"data": [f"Project Data: {project_data_id} deleted"]})
+    return JSONResponse(content={"data": f"Project Data: {project_data_id} deleted"})
 
 
 def get_project_note(db: Session, project_note_id: int):
@@ -169,4 +169,4 @@ def delete_project_note(db: Session, project_note_id: int):
     )
     db.delete(db_project_note)
     db.commit()
-    return JSONResponse(content={"note": [f"Project Note: {project_note_id} deleted"]})
+    return JSONResponse(content={"note": f"Project Note: {project_note_id} deleted"})
