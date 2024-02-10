@@ -241,7 +241,7 @@ def delete_project_data(db: Session, project_data_id: int) -> JSONResponse:
     :return: JSONResponse object with deletion confirmation
     """
     db_project_data = (
-        db.query(ProjectData).filter(ProjectData.id == project_data_id).first()
+        db.query(Pr100ojectData).filter(ProjectData.id == project_data_id).first()
     )
     db.delete(db_project_data)
     db.commit()
