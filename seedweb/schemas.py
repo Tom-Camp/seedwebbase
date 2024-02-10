@@ -17,7 +17,7 @@ class Profile(ProfileBase):
     created_date: datetime.datetime
     updated_date: datetime.datetime
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 
@@ -50,7 +50,7 @@ class ProjectNotes(ProjectNotesBase):
     created_date: datetime.datetime
     updated_date: datetime.datetime
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 
@@ -72,5 +72,5 @@ class Project(ProjectBase):
     created_date: datetime.datetime
     updated_date: datetime.datetime
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
