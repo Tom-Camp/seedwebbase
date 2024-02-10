@@ -32,8 +32,9 @@ def get_db():
 
 
 @app.get("/healthcheck")
-def healthcheck():
-    return {"ping": "pong!"}
+def healthcheck(db: Session = Depends(get_db)):
+    status = db.is_active
+    return {"database": status}
 
 
 @app.post("/profiles/", response_model=schemas.Profile)

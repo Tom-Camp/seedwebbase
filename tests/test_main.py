@@ -1,11 +1,4 @@
-from starlette.testclient import TestClient
-
-from seedweb.main import app
-
-client = TestClient(app)
-
-
-def test_healthcheck():
-    response = client.get("/healthcheck")
+def test_main(test_app):
+    response = test_app.get("/healthcheck")
     assert response.status_code == 200
-    assert response.json() == {"ping": "pong!"}
+    assert response.json() == {"database": True}
