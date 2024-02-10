@@ -37,3 +37,16 @@ def cleanup_tables():
     with engine.connect() as connection:
         for table in reversed(Base.metadata.sorted_tables):
             connection.execute(table.delete())
+
+
+@pytest.fixture(scope="session")
+def valid_project():
+    project = {
+        "name": "Test Project One",
+        "bed_id": "lettuce",
+        "description": "A test of the lettuce bed",
+        "profile_id": 1,
+        "start": "07:00:00",
+        "end": "17:00:00",
+    }
+    return project

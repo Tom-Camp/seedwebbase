@@ -48,7 +48,7 @@ def get_projects(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_project(db: Session, project: schemas.ProjectCreate):
-    db_project = Project(**project.dict())
+    db_project = Project(**project.model_dump())
     db.add(db_project)
     db.commit()
     db.refresh(db_project)
@@ -103,7 +103,7 @@ def get_projects_data(db: Session, project_id: int, skip: int = 0, limit: int = 
 def create_project_data(
     db: Session, project_data: schemas.ProjectDataCreate, project_id: int
 ):
-    db_project_data = Profile(**project_data.dict(), project_id=project_id)
+    db_project_data = Profile(**project_data.model_dump(), project_id=project_id)
     db.add(db_project_data)
     db.commit()
     db.refresh(db_project_data)
@@ -146,7 +146,7 @@ def get_projects_notes(db: Session, project_id: int, skip: int = 0, limit: int =
 def create_project_note(
     db: Session, project_note: schemas.ProjectNotesCreate, project_id: int
 ):
-    db_project_notes = Profile(**project_note.dict(), project_id=project_id)
+    db_project_notes = Profile(**project_note.model_dump(), project_id=project_id)
     db.add(db_project_notes)
     db.commit()
     db.refresh(db_project_notes)
