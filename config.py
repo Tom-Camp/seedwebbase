@@ -1,3 +1,5 @@
+"""Configuration classes for the Development, Testing and Production."""
+
 import os
 
 from dotenv import find_dotenv, load_dotenv
@@ -8,6 +10,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class DevelopmentConfig:
+    """
+    Development configuration.
+    """
+
     SECRET_KEY = os.environ.get("SECRET_KEY")
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         "DATABASE_URI"
@@ -18,6 +24,10 @@ class DevelopmentConfig:
 
 
 class ProductionConfig:
+    """
+    Projection configuration.
+    """
+
     SECRET_KEY = os.environ.get("PROD_SECRET_KEY")
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         "DATABASE_URI"
@@ -28,6 +38,10 @@ class ProductionConfig:
 
 
 class TestingConfig:
+    """
+    Testing configuration.
+    """
+
     SECRET_KEY = os.environ.get("TEST_SECRET_KEY")
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         "TEST_DB_URI"

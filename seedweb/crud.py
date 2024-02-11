@@ -110,9 +110,11 @@ def create_project_data(
     return db_project_data
 
 
-def update_project_data(db: Session, project_data: schemas.ProjectDataCreate):
+def update_project_data(
+    db: Session, project_data_id: int, project_data: schemas.ProjectDataCreate
+):
     db_project_data = (
-        db.query(ProjectData).filter(ProjectData.id == project_data.id).first()
+        db.query(ProjectData).filter(ProjectData.id == project_data_id).first()
     )
     db_project_data.data = project_data.data
     db.commit()
@@ -153,9 +155,11 @@ def create_project_note(
     return db_project_notes
 
 
-def update_project_note(db: Session, project_note: schemas.ProjectNotesCreate):
+def update_project_note(
+    db: Session, project_note_id: int, project_note: schemas.ProjectNotesCreate
+):
     db_project_note = (
-        db.query(ProjectNotes).filter(ProjectNotes.id == project_note.id).first()
+        db.query(ProjectNotes).filter(ProjectNotes.id == project_note_id).first()
     )
     db_project_note.note = project_note.note
     db.commit()
