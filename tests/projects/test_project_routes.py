@@ -1,6 +1,13 @@
 class TestProject:
+    """Project testing class"""
+
     @staticmethod
     def test_create_project(test_app, valid_project):
+        """
+        Testing the Project creation endpoint
+        :param test_app: fastapi TestClient
+        :param valid_project: dict representing a valid Project
+        """
         response = test_app.post(
             "/projects",
             json=valid_project,
@@ -12,6 +19,10 @@ class TestProject:
 
     @staticmethod
     def test_get_projects(test_app):
+        """
+        Testing the endpoint that returns a list of Projects
+        :param test_app: fastapi TestClient
+        """
         response = test_app.get(
             "/projects/",
         )
@@ -21,6 +32,10 @@ class TestProject:
 
     @staticmethod
     def test_get_project(test_app):
+        """
+        Testing the endpoint that returns an individual Project
+        :param test_app: fastapi TestClient
+        """
         response = test_app.get(
             "/projects/1",
         )
@@ -31,6 +46,11 @@ class TestProject:
 
     @staticmethod
     def test_update_project(test_app, valid_project):
+        """
+        Testing the endpoint for updating a Project
+        :param test_app: fastapi TestClient
+        :param valid_project: dict representing a valid Project
+        """
         valid_project["name"] = "PATCHED Project One"
         response = test_app.patch(
             "/projects/1",
@@ -43,6 +63,10 @@ class TestProject:
 
     @staticmethod
     def test_delete_project(test_app):
+        """
+        Testing the endpoint for deleting a Project
+        :param test_app: fastapi TestClient
+        """
         response = test_app.delete(
             "/projects/1",
         )

@@ -8,8 +8,13 @@ from seedweb.schemas import Profile
 
 
 class TestProfileSchema:
+    """Testing the Pydantic schema models"""
+
     @staticmethod
     def test_profile_base():
+        """
+        Testing the ProfileBase schema
+        """
         profile = Profile(
             id=1,
             name="Test Profile",
@@ -25,6 +30,7 @@ class TestProfileSchema:
 
     @staticmethod
     def test_profile_raises():
+        """Testing validation errors"""
         with pytest.raises(ValidationError):
             _ = Profile(
                 id=2,
