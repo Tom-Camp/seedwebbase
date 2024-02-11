@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Type
 
 from fastapi.responses import JSONResponse
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from seedweb import schemas
 from seedweb.models import Profile, Project, ProjectData, ProjectNotes
@@ -83,7 +83,15 @@ def get_project(db: Session, project_id: int) -> Type[Project] | None:
     :param project_id: The Project ID
     :return: a Project object
     """
-    return db.query(Project).filter(Project.id == project_id).first()
+    return (
+        db.query(Project)
+        .options(
+            joinedload(Project.data),
+            joinedload(Project.notes),
+        )
+        .filter(Project.id == project_id)
+        .first()
+    )
 
 
 def get_projects(
@@ -198,16 +206,15 @@ def get_projects_data(
 
 
 def create_project_data(
-    db: Session, project_data: schemas.ProjectDataCreate, project_id: int
+    db: Session, project_data: schemas.ProjectDataCreate
 ) -> ProjectData:
     """
     Create a ProjectData object and write it to the database.
     :param db: SQLAlchemy sessionmaker
     :param project_data: a ProjectDataCreate object
-    :param project_id: The id for the project that the data is associated with.
     :return: a ProjectData object
     """
-    db_project_data = ProjectData(**project_data.model_dump(), project_id=project_id)
+    db_project_data = ProjectData(**project_data.model_dump())
     db.add(db_project_data)
     db.commit()
     db.refresh(db_project_data)
@@ -279,7 +286,7 @@ def get_projects_notes(
 
 
 def create_project_note(
-    db: Session, project_note: schemas.ProjectNotesCreate, project_id: int
+    db: Session, project_note: schemas.ProjectNotesCreate
 ) -> ProjectNotes:
     """
     Create a note to associate with a Project with the given Project ID.
@@ -288,7 +295,7 @@ def create_project_note(
     :param project_id: The Project ID
     :return: a ProjectNote object
     """
-    db_project_notes = Profile(**project_note.model_dump(), project_id=project_id)
+    db_project_notes = ProjectNotes(**project_note.model_dump())
     db.add(db_project_notes)
     db.commit()
     db.refresh(db_project_notes)
