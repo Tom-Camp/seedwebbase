@@ -1,11 +1,15 @@
+from typing import Type
+
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
-from seedweb import crud, models, schemas
+from seedweb import crud, schemas
 from seedweb.database import SessionLocal, engine
+from seedweb.models import Base, Profile, Project, ProjectData, ProjectNotes
 
-models.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -23,7 +27,7 @@ app.add_middleware(
 )
 
 
-def get_db():
+def get_db() -> SessionLocal:
     """
     Create a new local database session.
     :return: SQLAlchemy sessionmaker
@@ -36,19 +40,21 @@ def get_db():
 
 
 @app.get("/healthcheck")
-def healthcheck(db: Session = Depends(get_db)):
+def healthcheck(db: Session = Depends(get_db)) -> JSONResponse:
     """
     Health check endpoint. This endpoint checks the database connection and returns true if
     the database connection is active.
     :param db: SQLAlchemy sessionmaker
-    :return: dict
+    :return: JSONResponse
     """
     status = db.is_active
-    return {"database": status}
+    return JSONResponse({"database": status})
 
 
 @app.post("/profiles/", response_model=schemas.Profile)
-def create_profile(profile: schemas.ProfileCreate, db: Session = Depends(get_db)):
+def create_profile(
+    profile: schemas.ProfileCreate, db: Session = Depends(get_db)
+) -> Profile:
     """
     Endpoint for creating a Profile
     :param profile: Pydantic schema for the Profile model
@@ -59,7 +65,9 @@ def create_profile(profile: schemas.ProfileCreate, db: Session = Depends(get_db)
 
 
 @app.get("/profiles/", response_model=list[schemas.Profile])
-def get_profiles(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def get_profiles(
+    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
+) -> list[Type[Profile]] | None:
     """
     Endpoint to return a list of Profiles
     :param skip: int - the number of Profiles to skip
@@ -72,7 +80,9 @@ def get_profiles(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
 
 
 @app.get("/profiles/{profile_id}", response_model=schemas.Profile)
-def get_profile(profile_id: int, db: Session = Depends(get_db)):
+def get_profile(
+    profile_id: int, db: Session = Depends(get_db)
+) -> Type[Profile] | HTTPException:
     """
     An endpoint to return a Profile given a Profile ID.
     :param profile_id: int - the Profile ID
@@ -88,7 +98,7 @@ def get_profile(profile_id: int, db: Session = Depends(get_db)):
 @app.patch("/profiles/{profile_id}", response_model=schemas.Profile)
 def update_profile(
     profile_id: int, profile: schemas.ProfileCreate, db: Session = Depends(get_db)
-):
+) -> Type[Profile] | HTTPException:
     """
     An endpoint to update a Profile
     :param profile_id: int - the Profile ID
@@ -103,7 +113,9 @@ def update_profile(
 
 
 @app.delete("/profiles/{profile_id}")
-def delete_profile(profile_id: int, db: Session = Depends(get_db)):
+def delete_profile(
+    profile_id: int, db: Session = Depends(get_db)
+) -> JSONResponse | HTTPException:
     """
     An endpoint to delete a given Profile.
     :param profile_id: int - the Profile ID
@@ -117,7 +129,9 @@ def delete_profile(profile_id: int, db: Session = Depends(get_db)):
 
 
 @app.post("/projects/", response_model=schemas.Project)
-def create_project(project: schemas.ProjectCreate, db: Session = Depends(get_db)):
+def create_project(
+    project: schemas.ProjectCreate, db: Session = Depends(get_db)
+) -> Project:
     """
     Endpoint for creating a Project
     :param project: Pydantic schema for the Profile model
@@ -128,7 +142,9 @@ def create_project(project: schemas.ProjectCreate, db: Session = Depends(get_db)
 
 
 @app.get("/projects/", response_model=list[schemas.Project])
-def get_projects(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def get_projects(
+    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
+) -> list[Type[Project]] | None:
     """
     Endpoint to return a list of Projects
     :param skip: int - the number of Projects to skip
@@ -141,7 +157,9 @@ def get_projects(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
 
 
 @app.get("/projects/{project_id}", response_model=schemas.Project)
-def get_project(project_id: int, db: Session = Depends(get_db)):
+def get_project(
+    project_id: int, db: Session = Depends(get_db)
+) -> Type[Project] | HTTPException:
     """
     An endpoint to return a Project given a Profile ID.
     :param project_id: int - the Profile ID
@@ -155,7 +173,9 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
 
 
 @app.get("/projects/{project_id}/status")
-def get_project_status(project_id: int, db: Session = Depends(get_db)):
+def get_project_status(
+    project_id: int, db: Session = Depends(get_db)
+) -> JSONResponse | HTTPException:
     """
     An endpoint to return a Projects status. The status determines if the lights should be on or off
     based on the start and end values.
@@ -172,7 +192,7 @@ def get_project_status(project_id: int, db: Session = Depends(get_db)):
 @app.patch("/projects/{project_id}", response_model=schemas.Project)
 def update_project(
     project_id: int, project: schemas.ProjectCreate, db: Session = Depends(get_db)
-):
+) -> Type[Project] | None:
     """
     An endpoint to update a Project
     :param project_id: int - the Project ID
@@ -187,7 +207,9 @@ def update_project(
 
 
 @app.delete("/projects/{project_id}")
-def delete_project(project_id: int, db: Session = Depends(get_db)):
+def delete_project(
+    project_id: int, db: Session = Depends(get_db)
+) -> JSONResponse | HTTPException:
     """
     An endpoint to delete a given Project.
     :param project_id: int - the Profile ID
@@ -205,7 +227,7 @@ def create_project_data(
     project_id: int,
     project_data: schemas.ProjectDataCreate,
     db: Session = Depends(get_db),
-):
+) -> ProjectData:
     """
     Endpoint for creating Project Data
     :param project_id: Project ID
@@ -221,7 +243,7 @@ def create_project_data(
 @app.get("/projects/{project_id}/data/", response_model=list[schemas.ProjectData])
 def get_projects_data(
     project_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
-):
+) -> list[Type[ProjectData]] | None:
     """
     Endpoint to return a list of Project Data
     :param project_id: int - The Project ID
@@ -237,7 +259,9 @@ def get_projects_data(
 @app.get(
     "/projects/{project_id}/data/{project_data_id}", response_model=schemas.ProjectData
 )
-def get_project_data(project_data_id: int, db: Session = Depends(get_db)):
+def get_project_data(
+    project_data_id: int, db: Session = Depends(get_db)
+) -> Type[ProjectData] | HTTPException:
     """
     An endpoint to return Project Data given an ID
     :param project_data_id: int - The ID of the Project Data
@@ -257,7 +281,7 @@ def update_project_data(
     project_data_id: int,
     project_data: schemas.ProjectDataCreate,
     db: Session = Depends(get_db),
-):
+) -> Type[ProjectData] | HTTPException:
     """
     An endpoint to update Project Data.
     :param project_data_id: Project Data ID
@@ -274,7 +298,9 @@ def update_project_data(
 
 
 @app.delete("/projects/{project_id}/data/{project_data_id}")
-def delete_project_data(project_data_id: int, db: Session = Depends(get_db)):
+def delete_project_data(
+    project_data_id: int, db: Session = Depends(get_db)
+) -> JSONResponse | HTTPException:
     """
     An endpoint to delete a Project Data record.
     :param project_data_id: The Project Data ID
@@ -292,7 +318,7 @@ def create_project_note(
     project_id: int,
     project_notes: schemas.ProjectNotesCreate,
     db: Session = Depends(get_db),
-):
+) -> ProjectNotes:
     """
     Endpoint for creating Project Notes
     :param project_id: Project ID
@@ -308,7 +334,7 @@ def create_project_note(
 @app.get("/projects/{project_id}/notes/", response_model=list[schemas.ProjectNotes])
 def get_projects_notes(
     project_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
-):
+) -> list[Type[ProjectNotes]] | None:
     """
     Endpoint to return a list of Project Notes
     :param project_id: int - The Project ID
@@ -327,7 +353,9 @@ def get_projects_notes(
     "/projects/{project_id}/notes/{project_note_id}",
     response_model=schemas.ProjectNotes,
 )
-def get_project_note(project_note_id: int, db: Session = Depends(get_db)):
+def get_project_note(
+    project_note_id: int, db: Session = Depends(get_db)
+) -> Type[ProjectNotes] | HTTPException:
     """
     An endpoint to return a Project Note given an ID.
     :param project_note_id: int - The ID of the Project Note
@@ -347,7 +375,7 @@ def update_project_note(
     project_note_id: int,
     project_note: schemas.ProjectNotesCreate,
     db: Session = Depends(get_db),
-):
+) -> Type[ProjectNotes] | HTTPException:
     """
     An endpoint to update a Project Notes
     :param project_note_id: Project Note ID
@@ -364,7 +392,9 @@ def update_project_note(
 
 
 @app.delete("/projects/{project_id}/notes/{project_note_id}")
-def delete_project_note(project_note_id: int, db: Session = Depends(get_db)):
+def delete_project_note(
+    project_note_id: int, db: Session = Depends(get_db)
+) -> JSONResponse | HTTPException:
     """
     An endpoint to delete a Project Note record.
     :param project_note_id: The Project Data ID
