@@ -1,6 +1,12 @@
 class TestProfile:
+    """Profile testing class"""
+
     @staticmethod
     def test_create_profile(test_app):
+        """
+        Test the Profile creation endpoint.
+        :param test_app: fastapi TestClient
+        """
         response = test_app.post(
             "/profiles",
             json={
@@ -15,6 +21,10 @@ class TestProfile:
 
     @staticmethod
     def test_get_profiles(test_app):
+        """
+        Testing the endpoint return a list of Profiles
+        :param test_app: fastapi TestClient
+        """
         response = test_app.get(
             "/profiles/",
         )
@@ -24,6 +34,10 @@ class TestProfile:
 
     @staticmethod
     def test_get_profile(test_app):
+        """
+        Test for the endpoint returning an individual Profile
+        :param test_app: fastapi TestClient
+        """
         response = test_app.get("/profiles/1")
         assert response.status_code == 200
         content = response.json()
@@ -32,6 +46,10 @@ class TestProfile:
 
     @staticmethod
     def test_update_profile(test_app):
+        """
+        Testing the endpoint for updating a Profile.
+        :param test_app: fastapi TestClient
+        """
         response = test_app.patch(
             "/profiles/1",
             json={
@@ -48,6 +66,10 @@ class TestProfile:
 
     @staticmethod
     def test_delete_profile(test_app):
+        """
+        A test for the endpoint for deleting a Profile
+        :param test_app: fastapi TestClient
+        """
         response = test_app.delete(
             "/profiles/1",
         )

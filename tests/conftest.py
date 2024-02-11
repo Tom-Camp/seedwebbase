@@ -16,6 +16,10 @@ Base.metadata.create_all(bind=engine)
 
 
 def override_get_db():
+    """
+    Override the dev/prod DB with the testing db.
+    :return: TestingSessionLocal
+    """
     try:
         db = TestingSessionLocal()
         yield db
@@ -28,19 +32,22 @@ app.dependency_overrides[get_db] = override_get_db
 
 @pytest.fixture(scope="module")
 def test_app():
+    """Create the TestClient"""
     client = TestClient(app)
     yield client
 
 
 @pytest.fixture(autouse=True)
 def cleanup_tables():
+    """Clean up the test DB tables"""
     with engine.connect() as connection:
         for table in reversed(Base.metadata.sorted_tables):
             connection.execute(table.delete())
 
 
 @pytest.fixture(scope="session")
-def valid_project():
+def valid_project() -> dict:
+    """Return a valid Project dict"""
     project = {
         "name": "Test Project One",
         "bed_id": "lettuce",
