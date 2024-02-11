@@ -80,9 +80,7 @@ def get_profiles(
 
 
 @app.get("/profiles/{profile_id}", response_model=schemas.Profile)
-def get_profile(
-    profile_id: int, db: Session = Depends(get_db)
-) -> Type[Profile] | HTTPException:
+def get_profile(profile_id: int, db: Session = Depends(get_db)) -> Type[Profile]:
     """
     An endpoint to return a Profile given a Profile ID.
     :param profile_id: int - the Profile ID
@@ -98,7 +96,7 @@ def get_profile(
 @app.patch("/profiles/{profile_id}", response_model=schemas.Profile)
 def update_profile(
     profile_id: int, profile: schemas.ProfileCreate, db: Session = Depends(get_db)
-) -> Type[Profile] | HTTPException:
+) -> Type[Profile]:
     """
     An endpoint to update a Profile
     :param profile_id: int - the Profile ID
@@ -113,9 +111,7 @@ def update_profile(
 
 
 @app.delete("/profiles/{profile_id}")
-def delete_profile(
-    profile_id: int, db: Session = Depends(get_db)
-) -> JSONResponse | HTTPException:
+def delete_profile(profile_id: int, db: Session = Depends(get_db)) -> JSONResponse:
     """
     An endpoint to delete a given Profile.
     :param profile_id: int - the Profile ID
@@ -157,9 +153,7 @@ def get_projects(
 
 
 @app.get("/projects/{project_id}", response_model=schemas.Project)
-def get_project(
-    project_id: int, db: Session = Depends(get_db)
-) -> Type[Project] | HTTPException:
+def get_project(project_id: int, db: Session = Depends(get_db)) -> Type[Project]:
     """
     An endpoint to return a Project given a Profile ID.
     :param project_id: int - the Profile ID
@@ -173,9 +167,7 @@ def get_project(
 
 
 @app.get("/projects/{project_id}/status")
-def get_project_status(
-    project_id: int, db: Session = Depends(get_db)
-) -> JSONResponse | HTTPException:
+def get_project_status(project_id: int, db: Session = Depends(get_db)) -> JSONResponse:
     """
     An endpoint to return a Projects status. The status determines if the lights should be on or off
     based on the start and end values.
@@ -207,9 +199,7 @@ def update_project(
 
 
 @app.delete("/projects/{project_id}")
-def delete_project(
-    project_id: int, db: Session = Depends(get_db)
-) -> JSONResponse | HTTPException:
+def delete_project(project_id: int, db: Session = Depends(get_db)) -> JSONResponse:
     """
     An endpoint to delete a given Project.
     :param project_id: int - the Profile ID
@@ -261,7 +251,7 @@ def get_projects_data(
 )
 def get_project_data(
     project_data_id: int, db: Session = Depends(get_db)
-) -> Type[ProjectData] | HTTPException:
+) -> Type[ProjectData]:
     """
     An endpoint to return Project Data given an ID
     :param project_data_id: int - The ID of the Project Data
@@ -281,7 +271,7 @@ def update_project_data(
     project_data_id: int,
     project_data: schemas.ProjectDataCreate,
     db: Session = Depends(get_db),
-) -> Type[ProjectData] | HTTPException:
+) -> Type[ProjectData]:
     """
     An endpoint to update Project Data.
     :param project_data_id: Project Data ID
@@ -300,7 +290,7 @@ def update_project_data(
 @app.delete("/projects/{project_id}/data/{project_data_id}")
 def delete_project_data(
     project_data_id: int, db: Session = Depends(get_db)
-) -> JSONResponse | HTTPException:
+) -> JSONResponse:
     """
     An endpoint to delete a Project Data record.
     :param project_data_id: The Project Data ID
@@ -355,7 +345,7 @@ def get_projects_notes(
 )
 def get_project_note(
     project_note_id: int, db: Session = Depends(get_db)
-) -> Type[ProjectNotes] | HTTPException:
+) -> Type[ProjectNotes]:
     """
     An endpoint to return a Project Note given an ID.
     :param project_note_id: int - The ID of the Project Note
@@ -375,7 +365,7 @@ def update_project_note(
     project_note_id: int,
     project_note: schemas.ProjectNotesCreate,
     db: Session = Depends(get_db),
-) -> Type[ProjectNotes] | HTTPException:
+) -> Type[ProjectNotes]:
     """
     An endpoint to update a Project Notes
     :param project_note_id: Project Note ID
@@ -394,7 +384,7 @@ def update_project_note(
 @app.delete("/projects/{project_id}/notes/{project_note_id}")
 def delete_project_note(
     project_note_id: int, db: Session = Depends(get_db)
-) -> JSONResponse | HTTPException:
+) -> JSONResponse:
     """
     An endpoint to delete a Project Note record.
     :param project_note_id: The Project Data ID
