@@ -214,20 +214,16 @@ def delete_project(project_id: int, db: Session = Depends(get_db)) -> JSONRespon
 
 @app.post("/projects/{project_id}/data/", response_model=schemas.ProjectData)
 def create_project_data(
-    project_id: int,
     project_data: schemas.ProjectDataCreate,
     db: Session = Depends(get_db),
 ) -> ProjectData:
     """
     Endpoint for creating Project Data
-    :param project_id: Project ID
     :param project_data: Pydantic schema for the ProjectData model
     :param db: SQLAlchemy sessionmaker
     :return: JSON response
     """
-    return crud.create_project_data(
-        db=db, project_data=project_data, project_id=project_id
-    )
+    return crud.create_project_data(db=db, project_data=project_data)
 
 
 @app.get("/projects/{project_id}/data/", response_model=list[schemas.ProjectData])
@@ -305,20 +301,16 @@ def delete_project_data(
 
 @app.post("/projects/{project_id}/notes/", response_model=schemas.ProjectNotes)
 def create_project_note(
-    project_id: int,
     project_notes: schemas.ProjectNotesCreate,
     db: Session = Depends(get_db),
 ) -> ProjectNotes:
     """
     Endpoint for creating Project Notes
-    :param project_id: Project ID
     :param project_notes: Pydantic schema for the ProjectNotes model
     :param db: SQLAlchemy sessionmaker
     :return: JSON response
     """
-    return crud.create_project_note(
-        db=db, project_note=project_notes, project_id=project_id
-    )
+    return crud.create_project_note(db=db, project_note=project_notes)
 
 
 @app.get("/projects/{project_id}/notes/", response_model=list[schemas.ProjectNotes])
