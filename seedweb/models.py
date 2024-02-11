@@ -8,6 +8,8 @@ from seedweb.database import Base
 
 
 class Profile(Base):
+    """Profile SQLAlchemy model"""
+
     __tablename__ = "profile_table"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -25,6 +27,8 @@ class Profile(Base):
 
 
 class Project(Base):
+    """Project SQLAlchemy model"""
+
     __tablename__ = "project_table"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -53,6 +57,8 @@ class Project(Base):
 
 
 class ProjectData(Base):
+    """ProjectData SQLAlchemy model"""
+
     __tablename__ = "project_data_table"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -71,6 +77,8 @@ class ProjectData(Base):
 
 
 class ProjectNotes(Base):
+    """ProjectNotes SQLAlchemy model"""
+
     __tablename__ = "project_notes_tables"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
