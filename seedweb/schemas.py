@@ -1,4 +1,5 @@
 import datetime
+from typing import List
 
 from pydantic import BaseModel
 
@@ -110,6 +111,8 @@ class ProjectCreate(ProjectBase):
 class Project(ProjectBase):
     """Project model"""
 
+    data: List[ProjectData] = []
+    notes: List[ProjectNotes] = []
     id: int
     created_date: datetime.datetime
     updated_date: datetime.datetime
