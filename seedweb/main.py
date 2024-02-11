@@ -94,7 +94,7 @@ def update_profile(
     :param profile_id: int - the Profile ID
     :param profile: dict - the Profile object
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_profile = crud.update_profile(db, profile_id=profile_id, profile=profile)
     if db_profile is None:
@@ -108,7 +108,7 @@ def delete_profile(profile_id: int, db: Session = Depends(get_db)):
     An endpoint to delete a given Profile.
     :param profile_id: int - the Profile ID
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_profile = crud.delete_profile(db, profile_id=profile_id)
     if db_profile is None:
@@ -122,7 +122,7 @@ def create_project(project: schemas.ProjectCreate, db: Session = Depends(get_db)
     Endpoint for creating a Project
     :param project: Pydantic schema for the Profile model
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     return crud.create_project(db=db, project=project)
 
@@ -134,7 +134,7 @@ def get_projects(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
     :param skip: int - the number of Projects to skip
     :param limit: int - the total number of Profiles to return
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     projects = crud.get_projects(db, skip=skip, limit=limit)
     return projects
@@ -146,7 +146,7 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
     An endpoint to return a Project given a Profile ID.
     :param project_id: int - the Profile ID
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_project = crud.get_project(db, project_id=project_id)
     if db_project is None:
@@ -161,7 +161,7 @@ def get_project_status(project_id: int, db: Session = Depends(get_db)):
     based on the start and end values.
     :param project_id: int - the Profile ID
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_project = crud.get_project_status(db, project_id=project_id)
     if db_project is None:
@@ -178,7 +178,7 @@ def update_project(
     :param project_id: int - the Project ID
     :param project: dict - the Profile object
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_project = crud.update_project(db, project_id=project_id, project=project)
     if db_project is None:
@@ -192,7 +192,7 @@ def delete_project(project_id: int, db: Session = Depends(get_db)):
     An endpoint to delete a given Project.
     :param project_id: int - the Profile ID
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_project = crud.delete_project(db, project_id=project_id)
     if db_project is None:
@@ -211,7 +211,7 @@ def create_project_data(
     :param project_id: Project ID
     :param project_data: Pydantic schema for the ProjectData model
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     return crud.create_project_data(
         db=db, project_data=project_data, project_id=project_id
@@ -228,7 +228,7 @@ def get_projects_data(
     :param skip: int - the number of Projects to skip
     :param limit: int - the total number of Profiles to return
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_data = crud.get_projects_data(db, project_id=project_id, skip=skip, limit=limit)
     return db_data
@@ -242,7 +242,7 @@ def get_project_data(project_data_id: int, db: Session = Depends(get_db)):
     An endpoint to return Project Data given an ID
     :param project_data_id: int - The ID of the Project Data
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_data = crud.get_project_data(db, project_data_id=project_data_id)
     if db_data is None:
@@ -263,7 +263,7 @@ def update_project_data(
     :param project_data_id: Project Data ID
     :param project_data: A JSON data object of the project data.
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_data = crud.update_project_data(
         db, project_data_id=project_data_id, project_data=project_data
@@ -279,7 +279,7 @@ def delete_project_data(project_data_id: int, db: Session = Depends(get_db)):
     An endpoint to delete a Project Data record.
     :param project_data_id: The Project Data ID
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_project_data = crud.delete_project_data(db, project_data_id=project_data_id)
     if db_project_data is None:
@@ -298,7 +298,7 @@ def create_project_note(
     :param project_id: Project ID
     :param project_notes: Pydantic schema for the ProjectNotes model
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     return crud.create_project_note(
         db=db, project_note=project_notes, project_id=project_id
@@ -315,7 +315,7 @@ def get_projects_notes(
     :param skip: int - the number of Projects to skip
     :param limit: int - the total number of Profiles to return
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_project_note = crud.get_projects_notes(
         db, project_id=project_id, skip=skip, limit=limit
@@ -332,7 +332,7 @@ def get_project_note(project_note_id: int, db: Session = Depends(get_db)):
     An endpoint to return a Project Note given an ID.
     :param project_note_id: int - The ID of the Project Note
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_project_note = crud.get_project_note(db, project_note_id=project_note_id)
     if db_project_note is None:
@@ -353,7 +353,7 @@ def update_project_note(
     :param project_note_id: Project Note ID
     :param project_note: A JSON data object of the project data.
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_project_note = crud.update_project_note(
         db, project_note_id=project_note_id, project_note=project_note
@@ -369,7 +369,7 @@ def delete_project_note(project_note_id: int, db: Session = Depends(get_db)):
     An endpoint to delete a Project Note record.
     :param project_note_id: The Project Data ID
     :param db: SQLAlchemy sessionmaker
-    :return: json response
+    :return: JSON response
     """
     db_project_note = crud.delete_project_note(db, project_note_id=project_note_id)
     if db_project_note is None:
