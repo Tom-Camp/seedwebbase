@@ -1,7 +1,8 @@
 import datetime
-from typing import List
+import json
+from typing import Any, List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class ProfileBase(BaseModel):
@@ -14,7 +15,12 @@ class ProfileBase(BaseModel):
 class ProfileCreate(ProfileBase):
     """ProfileCreate passthrough model"""
 
-    pass
+    @field_validator("colors")
+    @classmethod
+    def validate_json(cls, v: Any):
+        if not json.loads(v):
+            raise ValueError("Colors are not valid JSON")
+        return v
 
 
 class Profile(ProfileBase):
@@ -43,7 +49,12 @@ class ProjectDataBase(BaseModel):
 class ProjectDataCreate(ProjectDataBase):
     """ProjectDataCreate passthrough model"""
 
-    pass
+    @field_validator("sensor_data")
+    @classmethod
+    def validate_json(cls, v: Any):
+        if not json.loads(v):
+            raise ValueError("Sensor Data is not valid JSON")
+        return v
 
 
 class ProjectData(ProjectDataBase):
@@ -100,6 +111,12 @@ class ProjectBase(BaseModel):
     profile_id: int
     start: datetime.time
     end: datetime.time
+
+
+class ProjectList(ProjectBase):
+    """List view for Projects"""
+
+    id: int
 
 
 class ProjectCreate(ProjectBase):

@@ -16,6 +16,8 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:8080",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
 app.add_middleware(
@@ -137,7 +139,7 @@ def create_project(
     return crud.create_project(db=db, project=project)
 
 
-@app.get("/projects/", response_model=list[schemas.Project])
+@app.get("/projects/", response_model=list[schemas.ProjectList])
 def get_projects(
     skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ) -> list[Type[Project]] | None:
