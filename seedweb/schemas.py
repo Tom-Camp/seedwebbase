@@ -30,6 +30,18 @@ class Profile(ProfileBase):
     created_date: datetime.datetime
     updated_date: datetime.datetime
 
+    @field_validator("created_date")
+    def format_created_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
+
+    @field_validator("updated_date")
+    def format_updated_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
+
+    @field_validator("colors")
+    def format_colors(cls, v):
+        return json.loads(v)
+
     class ConfigDict:
         """
         Configuration dictionary to determine whether to build models and look up discriminators of tagged
@@ -64,6 +76,18 @@ class ProjectData(ProjectDataBase):
     created_date: datetime.datetime
     updated_date: datetime.datetime
 
+    @field_validator("created_date")
+    def format_created_date(cls, v):
+        return v.strftime("%m-%d-%Y %H:%M")
+
+    @field_validator("updated_date")
+    def format_updated_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
+
+    @field_validator("sensor_data")
+    def format_sensor_data(cls, v):
+        return json.loads(v)
+
     class ConfigDict:
         """
         Configuration dictionary to determine whether to build models and look up discriminators of tagged
@@ -92,6 +116,14 @@ class ProjectNotes(ProjectNotesBase):
     id: int
     created_date: datetime.datetime
     updated_date: datetime.datetime
+
+    @field_validator("created_date")
+    def format_created_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
+
+    @field_validator("updated_date")
+    def format_updated_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
 
     class ConfigDict:
         """
@@ -125,6 +157,12 @@ class ProjectCreate(ProjectBase):
     pass
 
 
+class ProjectUpdate(ProjectBase):
+    """ProjectUpdate passthrough model"""
+
+    pass
+
+
 class Project(ProjectBase):
     """Project model"""
 
@@ -133,6 +171,14 @@ class Project(ProjectBase):
     id: int
     created_date: datetime.datetime
     updated_date: datetime.datetime
+
+    @field_validator("created_date")
+    def format_created_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
+
+    @field_validator("updated_date")
+    def format_updated_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
 
     class ConfigDict:
         """

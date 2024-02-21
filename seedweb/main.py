@@ -183,7 +183,7 @@ def get_project_status(project_id: int, db: Session = Depends(get_db)) -> JSONRe
     return db_project
 
 
-@app.patch("/projects/{project_id}", response_model=schemas.Project)
+@app.patch("/projects/{project_id}", response_model=schemas.ProjectUpdate)
 def update_project(
     project_id: int, project: schemas.ProjectCreate, db: Session = Depends(get_db)
 ) -> Type[Project] | None:
