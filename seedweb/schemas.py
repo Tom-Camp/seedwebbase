@@ -1,7 +1,8 @@
 import datetime
-from typing import List
+import json
+from typing import Any, List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class ProfileBase(BaseModel):
@@ -14,7 +15,12 @@ class ProfileBase(BaseModel):
 class ProfileCreate(ProfileBase):
     """ProfileCreate passthrough model"""
 
-    pass
+    @field_validator("colors")
+    @classmethod
+    def validate_json(cls, v: Any):
+        if not json.loads(v):
+            raise ValueError("Colors are not valid JSON")
+        return v
 
 
 class Profile(ProfileBase):
@@ -23,6 +29,18 @@ class Profile(ProfileBase):
     id: int
     created_date: datetime.datetime
     updated_date: datetime.datetime
+
+    @field_validator("created_date")
+    def format_created_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
+
+    @field_validator("updated_date")
+    def format_updated_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
+
+    @field_validator("colors")
+    def format_colors(cls, v):
+        return json.loads(v)
 
     class ConfigDict:
         """
@@ -43,7 +61,12 @@ class ProjectDataBase(BaseModel):
 class ProjectDataCreate(ProjectDataBase):
     """ProjectDataCreate passthrough model"""
 
-    pass
+    @field_validator("sensor_data")
+    @classmethod
+    def validate_json(cls, v: Any):
+        if not json.loads(v):
+            raise ValueError("Sensor Data is not valid JSON")
+        return v
 
 
 class ProjectData(ProjectDataBase):
@@ -52,6 +75,18 @@ class ProjectData(ProjectDataBase):
     id: int
     created_date: datetime.datetime
     updated_date: datetime.datetime
+
+    @field_validator("created_date")
+    def format_created_date(cls, v):
+        return v.strftime("%m-%d-%Y %H:%M")
+
+    @field_validator("updated_date")
+    def format_updated_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
+
+    @field_validator("sensor_data")
+    def format_sensor_data(cls, v):
+        return json.loads(v)
 
     class ConfigDict:
         """
@@ -82,6 +117,14 @@ class ProjectNotes(ProjectNotesBase):
     created_date: datetime.datetime
     updated_date: datetime.datetime
 
+    @field_validator("created_date")
+    def format_created_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
+
+    @field_validator("updated_date")
+    def format_updated_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
+
     class ConfigDict:
         """
         Configuration dictionary to determine whether to build models and look up discriminators of tagged
@@ -102,8 +145,20 @@ class ProjectBase(BaseModel):
     end: datetime.time
 
 
+class ProjectList(ProjectBase):
+    """List view for Projects"""
+
+    id: int
+
+
 class ProjectCreate(ProjectBase):
     """ProjectCreate passthrough model"""
+
+    pass
+
+
+class ProjectUpdate(ProjectBase):
+    """ProjectUpdate passthrough model"""
 
     pass
 
@@ -116,6 +171,14 @@ class Project(ProjectBase):
     id: int
     created_date: datetime.datetime
     updated_date: datetime.datetime
+
+    @field_validator("created_date")
+    def format_created_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
+
+    @field_validator("updated_date")
+    def format_updated_date(cls, v):
+        return v.strftime("%b %d %Y %H:%M")
 
     class ConfigDict:
         """
