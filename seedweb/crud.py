@@ -86,6 +86,7 @@ def get_project(db: Session, project_id: int) -> Type[Project] | None:
     return (
         db.query(Project)
         .options(
+            joinedload(Project.profile),
             joinedload(Project.data),
             joinedload(Project.notes),
         )
