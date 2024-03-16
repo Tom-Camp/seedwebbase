@@ -249,7 +249,7 @@ def delete_project_data(db: Session, project_data_id: int) -> JSONResponse:
     :return: JSONResponse object with deletion confirmation
     """
     db_project_data = (
-        db.query(Pr100ojectData).filter(ProjectData.id == project_data_id).first()
+        db.query(ProjectData).filter(ProjectData.id == project_data_id).first()
     )
     db.delete(db_project_data)
     db.commit()
@@ -293,7 +293,6 @@ def create_project_note(
     Create a note to associate with a Project with the given Project ID.
     :param db: SQLAlchemy sessionmaker
     :param project_note: The ProjectNote
-    :param project_id: The Project ID
     :return: a ProjectNote object
     """
     db_project_notes = ProjectNotes(**project_note.model_dump())
