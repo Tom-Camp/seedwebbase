@@ -15,8 +15,8 @@ class ProfileBase(BaseModel):
 class ProfileCreate(ProfileBase):
     """ProfileCreate passthrough model"""
 
-    @field_validator("colors")
     @classmethod
+    @field_validator("colors")
     def validate_json(cls, v: Any):
         if not json.loads(v):
             raise ValueError("Colors are not valid JSON")
@@ -30,14 +30,17 @@ class Profile(ProfileBase):
     created_date: datetime.datetime
     updated_date: datetime.datetime
 
+    @classmethod
     @field_validator("created_date")
     def format_created_date(cls, v):
         return v.strftime("%b %d %Y %H:%M")
 
+    @classmethod
     @field_validator("updated_date")
     def format_updated_date(cls, v):
         return v.strftime("%b %d %Y %H:%M")
 
+    @classmethod
     @field_validator("colors")
     def format_colors(cls, v):
         return json.loads(v)
@@ -61,8 +64,8 @@ class ProjectDataBase(BaseModel):
 class ProjectDataCreate(ProjectDataBase):
     """ProjectDataCreate passthrough model"""
 
-    @field_validator("sensor_data")
     @classmethod
+    @field_validator("sensor_data")
     def validate_json(cls, v: Any):
         if not json.loads(v):
             raise ValueError("Sensor Data is not valid JSON")
@@ -76,14 +79,17 @@ class ProjectData(ProjectDataBase):
     created_date: datetime.datetime
     updated_date: datetime.datetime
 
+    @classmethod
     @field_validator("created_date")
     def format_created_date(cls, v):
         return v.strftime("%m-%d-%Y %H:%M")
 
+    @classmethod
     @field_validator("updated_date")
     def format_updated_date(cls, v):
         return v.strftime("%b %d %Y %H:%M")
 
+    @classmethod
     @field_validator("sensor_data")
     def format_sensor_data(cls, v):
         return json.loads(v)
@@ -117,10 +123,12 @@ class ProjectNotes(ProjectNotesBase):
     created_date: datetime.datetime
     updated_date: datetime.datetime
 
+    @classmethod
     @field_validator("created_date")
     def format_created_date(cls, v):
         return v.strftime("%b %d %Y %H:%M")
 
+    @classmethod
     @field_validator("updated_date")
     def format_updated_date(cls, v):
         return v.strftime("%b %d %Y %H:%M")
@@ -172,10 +180,12 @@ class Project(ProjectBase):
     created_date: datetime.datetime
     updated_date: datetime.datetime
 
+    @classmethod
     @field_validator("created_date")
     def format_created_date(cls, v):
         return v.strftime("%b %d %Y %H:%M")
 
+    @classmethod
     @field_validator("updated_date")
     def format_updated_date(cls, v):
         return v.strftime("%b %d %Y %H:%M")
